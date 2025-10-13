@@ -1,5 +1,5 @@
 ---
-title: "Replication of Study 3 by Walker et al. (2019, Judgment and Decision Making)"
+title: "Replication of Study 2 by van Prooijen et al. (2018, European Journal of Social Psychology)"
 author: "Aya Salim (ayasalim@stanford.edu)"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format:
@@ -12,32 +12,32 @@ format:
 
 ### Justification
 
-My research interests lie in how people process and trust information in complex media environments. One phenomenon I am especially interested in is why some individuals find misleading claims compelling. Walker et al. (2019) propose that illusory pattern perception - the tendency to perceive meaning or structure in randomness - may help explain people’s openness to pseudo-profound statements. Replicating Study 3 from this paper aligns closely with my work on misinformation and trust by testing a cognitive mechanism that could underlie belief in misinformation.
+My research interests lie in how people process and trust information in complex media environments. One phenomenon I am especially interested in is why some individuals find misleading claims compelling. Work demonstrates that propose illusory pattern perception - the tendency to perceive meaning or structure in randomness - may help explain people’s openness to pseudo-profound statements (Walker et al., 2019). van Prooijen et al. (2018) provide one of the few studies that experimentally manipulate pattern perception itself. In Study 2, the authors induced participants to rely either on intuition and pattern search or on analytic reasoning while evaluating random sequences of coin tosses. Those encouraged to rely on intuition perceived more structure in randomness and, in turn, reported stronger irrational beliefs. I am interested in understanding why some individuals perceive hidden structure or meaning in randomness and how this tendency relates to belief in conspiracy theories and misinformation.
 
-I selected Study 3 particularly because it provides a more objective measure of pattern perception. Replicating this design allows for a more comprehensive test of whether the relationship between pattern perception and receptivity to pseudo-profound statements is robust and reproducible. I also hope to extend the experiment by adding trust or misinformation measures to examine whether the same cognitive bias that drives "bullshit receptivity" also predicts susceptibility to misinformation. While "bullshit receptivity" is about seeing meaning where none exists, I'd like to test whether illusory pattern perception also predicts believing truth where there isn't any.
+
+I selected Study 2 particularly because it offers a direct causal test of the relationship between intuitive pattern search and belief formation - an ideal foundation for later work examining how heightened pattern perception might make people more receptive to misinformation or "bullshit" statements. Whereas other paradigms manipulate control or uncertainty to elicit pattern detection indirectly, this study isolates the pattern-perception process itself. 
 
 Given that the literature connecting illusory pattern perception to conspiracy beliefs has already produced mixed results, a careful replication of this paradigm can provide valuable clarity about the reliability and boundary conditions in this sphere. This replication contributes not only to my own program of research but also to broader efforts to assess the reproducibility of psychological findings about belief formation and illusory pattern perception.
 
 ### Stimuli and Procedures
 
-The experiment linked simple perception and reasoning tasks to judgments of meaning. Participants viewed ambiguous or random stimuli and made basic perceptual or causal judgments, then rated how “profound” various statements seemed and completed a brief reasoning test. The key result I hope to replicate is that people who more often perceive patterns in randomness also rate pseudo-profound statements as more meaningful.
+Participants completed a short task involving random coin-toss sequences, followed by ratings of perceived structure and measures of irrational belief.
 
-In the original study, participants completed two tasks designed to measure illusory pattern perception, followed by two tasks assessing reasoning and belief tendencies.
+The key result I hope to replicate is that participants instructed to use intuitive pattern search perceive more structure in random sequences than those instructed to analyze logically, and that higher pattern perception is correlated with stronger endorsement of irrational beliefs (e.g., conspiracy/supernatural).
 
-**Snowy Pictures Task (SPT)**. Participants viewed a series of 24 blurry, black-and-white “snowy” images - half contained a faintly embedded object, and half were pure visual noise. On each trial, participants indicated whether they thought an object was present. The key measure was the number of "false-alarm" responses - seeing an object in images that contain only random noise.
+**Pattern-Search Instructions (Manipulation)**. Participants were randomly assigned to one of two instruction sets: a high pattern-search (intuitive) condition that encouraged relying on "gut feelings" and actively looking for meaningful patterns, or a low pattern-search (analytic) condition that emphasized logical, non-intuitive analysis and discouraged intuition.
 
-**Co-variation Task**. Participants read short vignettes describing potential causal relationships between a food additive and a disease. Each vignette was accompanied by a simple 2x2 table showing how often the disease occurred among people who did or did not consume the additive. In some cases, a real statistical relationship was present; in others, the data were random. Participants rated how strongly they believed the additive caused or prevented the disease using a slider ranging from -100 ("strongly prevents") to +100 ("strongly causes"). Over-attributing causality in the random tables reflected illusory pattern perception.
+**Random Sequence Task (Pattern-Perception Measure)**. All participants viewed a series of randomly generated coin-toss sequences. After each sequence, they rated how structured or meaningful it appeared on a 1–7 scale (1 = completely random; 7 = clear pattern).
 
-**Profundity Ratings and Analytic Thinking**. Participants rated the "profoundness" of pseudo-profound statements and genuine inspirational quotes, and completed a brief cognitive-reflection test (CRT) that measures analytic reasoning.
+**Belief Measures**. Participants then completed short conspiracy and supernatural belief scales (Likert ratings of agreement with statements).
 
-For this replication, I will recreate the same structure using Qualtrics and a Prolific participant pool. Primary challenges will be ensuring that the stimuli work reliably online and that participants stay attentive throughout the task, especially given my goal to extend this experiment with other tasks/measures related to misinformation. Ensuring participants understand the slider scale in the co-variation task may also pose a challenge.
+For this replication, I will recreate the same structure using Qualtrics and a Prolific participant pool. Primary challenges will be ensuring that the stimuli work reliably online and that participants stay attentive throughout the task.
 
-**Possible Extension: Headline Accuracy Task**. Participants will see a balanced set of real and false news headlines and rate how accurate each seems. Stimuli will be drawn from published misinformation studies and pre-tested to ensure moderate believability. The key outcome is perceived accuracy of the false headlines.
 
 ### Links
 
-- **Repository:** [https://github.com/psych251/walker2019](https://github.com/psych251/walker2019)  
-- **Original paper:** [https://github.com/psych251/walker2019/blob/main/original_paper/finding-meaning-in-the-clouds-illusory-pattern-perception-predicts-receptivity-to-pseudo-profound-bullshit.pdf](https://github.com/psych251/walker2019/blob/main/original_paper/finding-meaning-in-the-clouds-illusory-pattern-perception-predicts-receptivity-to-pseudo-profound-bullshit.pdf)
+- **Repository:** [https://github.com/psych251/vanprooijen2018](https://github.com/psych251/vanprooijen2018)  
+- **Original paper:** [https://github.com/psych251/vanprooijen2018/blob/main/original_paper/van%20Prooijen%20Douglas%20and%20de%20Inocencio%20EJSP.pdf](https://github.com/psych251/vanprooijen2018/blob/main/original_paper/van%20Prooijen%20Douglas%20and%20de%20Inocencio%20EJSP.pdf)
 
 
 ## Methods
