@@ -12,8 +12,7 @@ format:
 
 ### Justification
 
-My research interests lie in how people process and trust information in complex media environments. One phenomenon I am especially interested in is why some individuals find misleading claims compelling. Work demonstrates that propose illusory pattern perception - the tendency to perceive meaning or structure in randomness - may help explain people’s openness to pseudo-profound statements (Walker et al., 2019). van Prooijen et al. (2018) provide one of the few studies that experimentally manipulate pattern perception itself. In Study 2, the authors induced participants to rely either on intuition and pattern search or on analytic reasoning while evaluating random sequences of coin tosses. Those encouraged to rely on intuition perceived more structure in randomness and, in turn, reported stronger irrational beliefs. I am interested in understanding why some individuals perceive hidden structure or meaning in randomness and how this tendency relates to belief in conspiracy theories and misinformation.
-
+My research interests lie in how people process and trust information in complex media environments. One phenomenon I am especially interested in is why some individuals find misleading claims compelling. Work demonstrates that illusory pattern perception - the tendency to perceive meaning or structure in randomness - may help explain people’s openness to pseudo-profound statements (Walker et al., 2019). van Prooijen et al. (2018) provide one of the few studies that experimentally manipulate pattern perception itself. In Study 2, the authors induced participants to rely either on intuition and pattern search or on analytic reasoning while evaluating random sequences of coin tosses. Those encouraged to rely on intuition perceived more structure in randomness and, in turn, reported stronger irrational beliefs. I am interested in understanding why some individuals perceive hidden structure or meaning in randomness and how this tendency relates to belief in conspiracy theories and misinformation.
 
 I selected Study 2 particularly because it offers a direct causal test of the relationship between intuitive pattern search and belief formation - an ideal foundation for later work examining how heightened pattern perception might make people more receptive to misinformation or "bullshit" statements. Whereas other paradigms manipulate control or uncertainty to elicit pattern detection indirectly, this study isolates the pattern-perception process itself. 
 
@@ -25,9 +24,9 @@ Participants completed a short task involving random coin-toss sequences, follow
 
 The key result I hope to replicate is that participants instructed to use intuitive pattern search perceive more structure in random sequences than those instructed to analyze logically, and that higher pattern perception is correlated with stronger endorsement of irrational beliefs (e.g., conspiracy/supernatural).
 
-**Pattern-Search Instructions (Manipulation)**. Participants were randomly assigned to one of two instruction sets: a high pattern-search (intuitive) condition that encouraged relying on "gut feelings" and actively looking for meaningful patterns, or a low pattern-search (analytic) condition that emphasized logical, non-intuitive analysis and discouraged intuition.
+**Pattern-Search Instructions (Manipulation)**. Participants were randomly assigned to one of two instruction sets: a high pattern-search (intuitive) condition that encouraged relying on "gut feelings" and actively looking for meaningful patterns, or a low pattern-search (analytic) condition that emphasized logical, non-intuitive analysis.
 
-**Random Sequence Task (Pattern-Perception Measure)**. All participants viewed a series of randomly generated coin-toss sequences. After each sequence, they rated how structured or meaningful it appeared on a 1–7 scale (1 = completely random; 7 = clear pattern).
+**Random Sequence Task (Pattern-Perception Measure)**. All participants viewed a series of randomly generated coin-toss sequences. After each sequence, they rated how structured or meaningful it appeared on a 1-7 scale (1 = completely random; 7 = clear pattern).
 
 **Belief Measures**. Participants then completed short conspiracy and supernatural belief scales (Likert ratings of agreement with statements).
 
@@ -38,6 +37,20 @@ For this replication, I will recreate the same structure using Qualtrics and a P
 
 - **Repository:** [https://github.com/psych251/vanprooijen2018](https://github.com/psych251/vanprooijen2018)  
 - **Original paper:** [https://github.com/psych251/vanprooijen2018/blob/main/original_paper/van%20Prooijen%20Douglas%20and%20de%20Inocencio%20EJSP.pdf](https://github.com/psych251/vanprooijen2018/blob/main/original_paper/van%20Prooijen%20Douglas%20and%20de%20Inocencio%20EJSP.pdf)
+
+## Project Progress Check 1
+
+**Link to experiment:** [https://stanforduniversity.qualtrics.com/jfe/form/SV_6DytqtdUq1o5Tgi](https://stanforduniversity.qualtrics.com/jfe/form/SV_6DytqtdUq1o5Tgi)  
+
+**Preview/demo:** [https://stanforduniversity.qualtrics.com/jfe/preview/previewId/e0dea73e-1583-41ec-abb0-0b6fd379b06e/SV_6DytqtdUq1o5Tgi?Q_CHL=preview&Q_SurveyVersionID=current](https://stanforduniversity.qualtrics.com/jfe/preview/previewId/e0dea73e-1583-41ec-abb0-0b6fd379b06e/SV_6DytqtdUq1o5Tgi?Q_CHL=preview&Q_SurveyVersionID=current)
+
+**Data analysis code of pilot data is found under data preparation.**
+
+- n = 17
+- 8 participants in low pattern search and 9 in high pattern search
+- direction of the mean difference was reversed (high = 2.89, low = 3.5)
+- manipulation check: F(1, 15) = 0.61, p = .45
+- overall low irrational belief endorsement (M = 2.43, SD = 0.72) ; no correlation with pattern perception, r = 0.07
 
 
 ## Methods
@@ -91,11 +104,114 @@ Data preparation following the analysis plan.
 
 #### Load Relevant Libraries and Functions
 
+library(tidyverse)
+library(mediation)
+
 #### Import data
+
+df <- read.csv('/Users/as4508/Downloads/PSYCH 251 Replication_October 29, 2025_13.32.csv')
 
 #### Data exclusion / filtering
 
+names(df) <- make.names(names(df))
+
+stopifnot(all(c("Finished","QID1185","Q11","Q32","Q52_1") %in% names(df)))
+belief_cols <- paste0("Q147_", 1:9)
+stopifnot(all(belief_cols %in% names(df)))
+
+d <- df %>%
+  filter(as.logical(Finished) == TRUE) %>%
+  filter(tolower(trimws(QID1185)) %in% c("yes","y","true","1"))
+
 #### Prepare data for analysis - create columns etc.
+
+# condition
+
+d <- d %>%
+  mutate(
+    q11_ans = !is.na(Q11) & trimws(Q11) != "",
+    q32_ans = !is.na(Q32) & trimws(Q32) != "",
+    PatternSearch = case_when(
+      q11_ans & !q32_ans ~ "High pattern search",
+      !q11_ans & q32_ans ~ "Low pattern search",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  filter(!is.na(PatternSearch)) %>%
+  mutate(
+    PatternSearch = factor(PatternSearch, levels = c("Low pattern search","High pattern search")),
+    HPS_num = ifelse(PatternSearch == "High pattern search", 1, 0)  # 0 = Low, 1 = High
+  )
+
+# pattern perception
+
+d <- d %>% mutate(PatternPerception = suppressWarnings(as.numeric(Q52_1)))
+
+# irrational beliefs
+
+lkrt_map <- c(
+  "definitely not true" = 1,
+  "probably not true"   = 2,
+  "unsure"              = 3,
+  "probably true"       = 4,
+  "definitely true"     = 5
+)
+recode_belief <- function(x) {
+  x_chr <- tolower(trimws(as.character(x)))
+  as.numeric(unname(lkrt_map[x_chr]))
+}
+d <- d %>%
+  mutate(across(all_of(belief_cols), recode_belief)) %>%
+  mutate(IrrationalBeliefs = rowMeans(across(all_of(belief_cols)), na.rm = TRUE))
+
+## quick summaries
+cat("\nNs by PatternSearch:\n"); print(table(d$PatternSearch))
+cat("\nPatternPerception by PatternSearch:\n"); print(tapply(d$PatternPerception, d$PatternSearch, summary))
+cat("\nIrrationalBeliefs summary:\n"); print(summary(d$IrrationalBeliefs))
+
+# analyses
+
+# condition on pattern perception
+print(t.test(PatternPerception ~ PatternSearch, data = d, var.equal = TRUE))
+print(summary(aov(PatternPerception ~ PatternSearch, data = d)))
+
+# correlation
+print(cor.test(d$PatternPerception, d$IrrationalBeliefs, use = "pairwise.complete.obs"))
+print(summary(lm(IrrationalBeliefs ~ PatternPerception, data = d)))
+
+# mediation
+m.mod <- lm(PatternPerception ~ HPS_num, data = d)                           # a-path
+y.mod <- lm(IrrationalBeliefs ~ HPS_num + PatternPerception, data = d)       # b- and c'-paths
+
+set.seed(251)
+cat("\n=== Mediation (bootstrapped; 5000 sims) ===\n")
+med.out <- mediate(m.mod, y.mod, treat = "HPS_num", mediator = "PatternPerception",
+                   boot = TRUE, sims = 5000)
+print(summary(med.out))
+
+# plots
+
+ggplot(d, aes(PatternSearch, PatternPerception, fill = PatternSearch)) +
+  geom_boxplot(alpha = .65) +
+  labs(
+    title = "Pattern Perception by Condition",
+    x = "Instruction Condition",
+    y = "Pattern Perception (1–7)"
+  ) +
+  guides(fill = "none") +
+  theme_minimal()
+
+ggplot(d, aes(PatternPerception, IrrationalBeliefs, color = PatternSearch)) +
+  geom_point(alpha = .7) +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(
+    title = "Relation between pattern perception and irrational beliefs",
+    x = "Pattern perception (1–7)",
+    y = "Irrational beliefs (1–5)",
+    color = "Condition"
+  ) +
+  theme_minimal()
+
 ```
 
 ### Confirmatory analysis
