@@ -38,7 +38,7 @@ For this replication, I will recreate the same structure using Qualtrics and a P
 - **Repository:** [https://github.com/psych251/vanprooijen2018](https://github.com/psych251/vanprooijen2018)  
 - **Original paper:** [https://github.com/psych251/vanprooijen2018/blob/main/original_paper/van%20Prooijen%20Douglas%20and%20de%20Inocencio%20EJSP.pdf](https://github.com/psych251/vanprooijen2018/blob/main/original_paper/van%20Prooijen%20Douglas%20and%20de%20Inocencio%20EJSP.pdf)
 
-## Project Progress Check 1
+## Project Progress
 
 **Link to experiment:** [https://stanforduniversity.qualtrics.com/jfe/form/SV_6DytqtdUq1o5Tgi](https://stanforduniversity.qualtrics.com/jfe/form/SV_6DytqtdUq1o5Tgi)  
 
@@ -52,6 +52,32 @@ For this replication, I will recreate the same structure using Qualtrics and a P
 - manipulation check: F(1, 15) = 0.61, p = .45
 - overall low irrational belief endorsement (M = 2.43, SD = 0.72) ; no correlation with pattern perception, r = 0.07
 
+**Draft Email**
+
+Dear Dr. van Prooijen,
+
+I’m emailing about your study “Connecting the dots: Illusory pattern perception predicts belief in conspiracies and the supernatural” in van Prooijen, Douglas, & de Inocencio (2018, European Journal of Social Psychology). I’m writing to share a mock-up of a replication of Study 2 as part of a graduate course, to see if you have any comments or concerns that you’d like to share.
+
+Please feel no obligation to respond to this message; I know time is tight. I just wanted to be sure you had a chance to provide any comments if you wanted and that you were aware my study is going on. Due to the quick timeframe of our course, if you are able to provide feedback, it would be wonderful to receive it by [one week from now], so I can incorporate your comments into the design and pre-registration.
+
+Here’s a link to my paradigm. Any insights you have into details that differ from your own study would be much appreciated. I will be piloting this paradigm in the next week, so I may also change some small details after collecting those data.
+
+Qualtrics link:
+https://stanforduniversity.qualtrics.com/jfe/form/SV_6DytqtdUq1o5Tgi
+
+Preview link:
+https://stanforduniversity.qualtrics.com/jfe/preview/previewId/e0dea73e-1583-41ec-abb0-0b6fd379b06e/SV_6DytqtdUq1o5Tgi?Q_CHL=preview&Q_SurveyVersionID=current
+
+I’m interested in your findings because my research focuses on how cognitive biases - particularly illusory pattern perception - shape susceptibility to misinformation, conspiracy beliefs, and judgments of truth. Study 2 offers a clean experimental manipulation of intuitive versus analytical pattern search, making it an ideal paradigm for a direct replication in Psych 251, "Laboratory Methods in Experimental Psychology" at Stanford. I will be replicating your experiment on Prolific (prolific.co). I know this is a deviation from the original population you tested, and I will note this sample decision prominently in the writeup. As I am attempting as faithful a replication as possible, any advice or insights on experimental design that I might not gather from the original article [and supplement] would be very appreciated.
+
+In addition, for my project, I need to preregister a “key statistical test” from your manuscript. The idea is that this is the test that most closely corresponds to the primary hypothesis. For your experiment, I chose the ANOVA comparing the intuitive vs. analytical pattern-search conditions on the pattern-perception measure, which appears to be the primary test supporting your manipulation’s effect on illusory pattern perception. Please let me know if you think this is appropriate or if there is another test that you would consider closer to being the key one for your interpretation.
+
+Thanks again,
+
+Aya Salim
+Stanford University
+
+PS: If you have any questions or concerns about this course project, feel free to contact me or the instructor, Michael Frank (mcfrank@stanford.edu).
 
 ## Methods
 
@@ -99,7 +125,7 @@ You can comment this section out prior to final report with data collection.
 
 Data preparation following the analysis plan.
 	
-```{r include=F}
+```{r}
 ### Data Preparation
 
 #### Load Relevant Libraries and Functions
@@ -169,6 +195,10 @@ cat("\nNs by PatternSearch:\n"); print(table(d$PatternSearch))
 cat("\nPatternPerception by PatternSearch:\n"); print(tapply(d$PatternPerception, d$PatternSearch, summary))
 cat("\nIrrationalBeliefs summary:\n"); print(summary(d$IrrationalBeliefs))
 
+```
+
+
+```{r}
 # analyses
 
 # condition on pattern perception
@@ -189,18 +219,6 @@ med.out <- mediate(m.mod, y.mod, treat = "HPS_num", mediator = "PatternPerceptio
                    boot = TRUE, sims = 5000)
 print(summary(med.out))
 
-# plots
-
-ggplot(d, aes(PatternSearch, PatternPerception, fill = PatternSearch)) +
-  geom_boxplot(alpha = .65) +
-  labs(
-    title = "Pattern Perception by Condition",
-    x = "Instruction Condition",
-    y = "Pattern Perception (1–7)"
-  ) +
-  guides(fill = "none") +
-  theme_minimal()
-
 ggplot(d, aes(PatternPerception, IrrationalBeliefs, color = PatternSearch)) +
   geom_point(alpha = .7) +
   geom_smooth(method = "lm", se = TRUE) +
@@ -210,6 +228,20 @@ ggplot(d, aes(PatternPerception, IrrationalBeliefs, color = PatternSearch)) +
     y = "Irrational beliefs (1–5)",
     color = "Condition"
   ) +
+  theme_minimal()
+```
+
+```{r}
+# main plot
+
+ggplot(d, aes(PatternSearch, PatternPerception, fill = PatternSearch)) +
+  geom_boxplot(alpha = .65) +
+  labs(
+    title = "Pattern Perception by Condition",
+    x = "Instruction Condition",
+    y = "Pattern Perception (1–7)"
+  ) +
+  guides(fill = "none") +
   theme_minimal()
 
 ```
