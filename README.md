@@ -18,4 +18,4 @@ My replication follows the original procedure using a Prolific sample.
 
 ## Repository Structure
 
-This uses the replication project template as well as a file called `anonymize.py` that can remove personally-identifiable information from the data exported by Qualtrics. Just run `python anonymize.py` to anonymize all Qualtrics `csv` files in the `data` directory.
+This uses the replication project template as well as a file called `anonymize.R` that removes personally-identifiable information from the data exported by Qualtrics.
