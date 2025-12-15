@@ -37,42 +37,15 @@ For this replication, I will recreate the same structure using Qualtrics and a P
 - **Repository:** [https://github.com/psych251/vanprooijen2018](https://github.com/psych251/vanprooijen2018)  
 - **Original paper:** [https://github.com/psych251/vanprooijen2018/blob/main/original_paper/van%20Prooijen%20Douglas%20and%20de%20Inocencio%20EJSP.pdf](https://github.com/psych251/vanprooijen2018/blob/main/original_paper/van%20Prooijen%20Douglas%20and%20de%20Inocencio%20EJSP.pdf)
 
-**Draft Email**
-
-Dear Dr. van Prooijen,
-
-I’m emailing about your study “Connecting the dots: Illusory pattern perception predicts belief in conspiracies and the supernatural” in van Prooijen, Douglas, & de Inocencio (2018, European Journal of Social Psychology). I’m writing to share a mock-up of a replication of Study 2 as part of a graduate course, to see if you have any comments or concerns that you’d like to share.
-
-Please feel no obligation to respond to this message; I know time is tight. I just wanted to be sure you had a chance to provide any comments if you wanted and that you were aware my study is going on. Due to the quick timeframe of our course, if you are able to provide feedback, it would be wonderful to receive it by [one week from now], so I can incorporate your comments into the design and pre-registration.
-
-Here’s a link to my paradigm. Any insights you have into details that differ from your own study would be much appreciated. I will be piloting this paradigm in the next week, so I may also change some small details after collecting those data.
-
-Qualtrics link:
-https://stanforduniversity.qualtrics.com/jfe/form/SV_6DytqtdUq1o5Tgi
-
-Preview link:
-https://stanforduniversity.qualtrics.com/jfe/preview/previewId/e0dea73e-1583-41ec-abb0-0b6fd379b06e/SV_6DytqtdUq1o5Tgi?Q_CHL=preview&Q_SurveyVersionID=current
-
-I’m interested in your findings because my research focuses on how cognitive biases - particularly illusory pattern perception - shape susceptibility to misinformation, conspiracy beliefs, and judgments of truth. Study 2 offers a clean experimental manipulation of intuitive versus analytical pattern search, making it an ideal paradigm for a direct replication in Psych 251, "Laboratory Methods in Experimental Psychology" at Stanford. I will be replicating your experiment on Prolific (prolific.co). I know this is a deviation from the original population you tested, and I will note this sample decision prominently in the writeup. As I am attempting as faithful a replication as possible, any advice or insights on experimental design that I might not gather from the original article [and supplement] would be very appreciated.
-
-In addition, for my project, I need to preregister a “key statistical test” from your manuscript. The idea is that this is the test that most closely corresponds to the primary hypothesis. For your experiment, I chose the ANOVA comparing the intuitive vs. analytical pattern-search conditions on the pattern-perception measure, which appears to be the primary test supporting your manipulation’s effect on illusory pattern perception. Please let me know if you think this is appropriate or if there is another test that you would consider closer to being the key one for your interpretation.
-
-Thanks again,
-
-Aya Salim
-Stanford University
-
-PS: If you have any questions or concerns about this course project, feel free to contact me or the instructor, Michael Frank (mcfrank@stanford.edu).
-
 ## Methods
 
 ### Power Analysis
 
-A power analysis to achieve 80% power was conducted using G*Power (using an original effect size of η2 = .04 that was converted and rounded to an effect size f = 0.2). This gives a sample size of 200 participants, but the planned sample size is n = 223 to fully replicate the size of the original study.
+A power analysis to achieve 80% power was conducted using G*Power (using an original effect size of η² = .04 that was converted and rounded to an effect size f = 0.2). This gives a sample size of 200 participants, but the planned sample size is n = 223 to fully replicate the size of the original study.
 
 ### Planned Sample
 
-223 U.S. adults recruited from Prolific.
+223 U.S. adults recruited from Prolific (only pre-screen criteria was an approval rating on Prolific of 95% and above).
 
 ### Materials
 
@@ -108,55 +81,51 @@ Although the lack of a direct effect precludes conclusions about causality, the 
 
 ### Differences from Original Study
 
-The original paper uses a sample run online through the Crowdflower forum on a US sample, while this study recruits participants from Prolific.
-
-Explicitly describe known differences in sample, setting, procedure, and analysis plan from original study.  The goal, of course, is to minimize those differences, but differences will inevitably occur.  Also, note whether such differences are anticipated to make a difference based on claims in the original article or subsequent published research on the conditions for obtaining the effect.
+The original paper uses a sample run online through the Crowdflower forum on a U.S. sample, while this study recruits participants from Prolific. The original paper also dropped 42 participants for the main analysis (unclear as to why since this is not clarified anywhere).
 
 ### Methods Addendum (Post Data Collection)
 
-You can comment this section out prior to final report with data collection.
-
 #### Actual Sample
-  Sample size, demographics, data exclusions based on rules spelled out in analysis plan
+
+n = 223 U.S. adults recruited from Prolific.
+
+No participants were excluded. The sample was broadly distributed across age (with the largest proportions aged 25–34 and 35–44), sex (52.9% female; 45.8% male), and was politically diverse, with 47.1% identifying as Democrats, 32.2% as Republicans, and 18.9% as Independents.
 
 #### Differences from pre-data collection methods plan
-  Any differences from what was described as the original plan, or “none”.
 
+None.
 
 ## Results
 
-
 ### Data preparation
 
-Data preparation following the analysis plan.
-	
 ```{r}
-### Data Preparation
+### data preparation
 
 library(tidyverse)
 library(mediation)
 
-df <- read.csv('/Users/as4508/Downloads/PSYCH 251 Replication_December 4, 2025_15.18.csv')
+df <- read.csv('/Users/as4508/Downloads/PSYCH 251 Replication_December 5, 2025_11.32.csv')
 
-#### Data exclusion / filtering
+### data exclusion / filtering
 names(df) <- make.names(names(df))
 
 stopifnot(all(c("Finished","QID1185","Q11","Q32","Q52_1") %in% names(df)))
 
-# Existing conspiracy belief items: Q147_1–Q147_9
+#### existing conspiracy belief items: Q147_1–Q147_9
 exist_cols <- paste0("Q147_", 1:9)
 
-# Fictitious conspiracy belief items: Q61_1–Q61_9
+#### fictitious conspiracy belief items: Q61_1–Q61_9
 fict_cols  <- paste0("Q61_", 1:9)
 
-# Supernatural beliefs: Q62_1–Q62_30
+#### supernatural belief items: Q62_1–Q62_30
 super_cols <- paste0("Q62_", 1:30)
 
 d <- df %>%
   filter(as.logical(Finished) == TRUE) %>%
   filter(tolower(trimws(QID1185)) %in% c("yes","y","true","1"))
 
-# drop the data from friends / pilots
+#### drop the data from friends in pilots
 drop_ids <- c("R_1liTJPYAoikbwhU", "R_1Qmr1xstM6JpSYb", "R_64w2157Kz9bsjqa",
               "R_6FR4OAFpcZdyD3k", "R_3SeQxLORbYzjQN4","R_7kL1ACZPfz9rbcs",
               "R_3AFX4LwXrljWHIZ", "R_7mOfv2ExW0w7sCB", "R_6JL50stmvNPPtuy",
@@ -176,14 +145,14 @@ d <- d %>%
     Condition = factor(Condition,
                        levels = c("Low pattern search", "High pattern search")),
     # 0/1 coding for mediation
-    HPS_num = ifelse(Condition == "High pattern search", 1, 0)) %>%
+    HPS_num = ifelse(Condition == "High pattern search", 1, -1)) %>%
   filter(!is.na(Condition))
 
-#### Pattern perception
+#### pattern perception measure (main DV)
 d <- d %>%
   mutate(PatternPerception = (as.numeric(Q52_1)))
 
-#### Irrational belief scales
+#### coding irrational belief scales
 
 lkrt_map <- c("definitely not true" = 1,
               "probably not true" = 2,
@@ -197,29 +166,102 @@ recode_belief <- function(x) {
 
 d <- d %>%
   mutate(across(all_of(c(exist_cols, fict_cols, super_cols)), recode_belief),
-    # Existing conspiracy beliefs (Q147_* scale)
+    # existing conspiracy beliefs (Q147_* scale)
     ExistingConspiracyBeliefs =
       rowMeans(across(all_of(exist_cols)), na.rm = TRUE),
-    # Fictitious conspiracy beliefs (Q61_* scale)
+    # fictitious conspiracy beliefs (Q61_* scale)
     FictitiousConspiracyBeliefs =
       rowMeans(across(all_of(fict_cols)), na.rm = TRUE),
-    # Supernatural beliefs (Q62_* scale)
+    # supernatural beliefs (Q62_* scale)
     SupernaturalBeliefs =
       rowMeans(across(all_of(super_cols)), na.rm = TRUE))
 
 ```
 
+```{r}
+### demographics
+
+d$sex <- d$QID1158
+d$age <- d$QID1157
+d$race <- d$QID1154
+d$education <- d$QID1155
+d$income <- d$QID1156
+d$polparty <- d$QID1215065339
+d$repstrength <- d$QID1215065340
+d$demstrength <- d$QID1215065341
+d$independent <- d$QID1215065342
+
+#### age summary
+
+age_dist <- d %>%
+  count(age) %>%
+  mutate(percent = 100 * n / sum(n))
+age_dist
+
+#### sex summary
+
+d %>%
+  count(sex) %>%
+  mutate(percent = 100 * n / sum(n))
+
+#### party summary
+
+d %>%
+  count(polparty) %>%
+  mutate(percent = 100 * n / sum(n))
+
+```
+
+### Confirmatory analysis
 
 ```{r}
-# analyses
+### main analysis
 
-# condition on pattern perception
+#### condition on pattern perception (ANOVA and manual calculation of effect size)
 
 print(summary(aov(PatternPerception ~ Condition, data = d)))
 print(t.test(PatternPerception ~ Condition, data = d, var.equal = TRUE))
 
+a <- aov(PatternPerception ~ Condition, data = d)
+ss <- summary(a)[[1]][,"Sum Sq"]
 
-# correlation
+eta_partial <- ss[1] / (ss[1] + ss[2])
+eta_partial
+
+d %>%
+  group_by(Condition) %>%
+  summarise(
+    n = n(),
+    mean = mean(PatternPerception, na.rm = TRUE),
+    sd = sd(PatternPerception, na.rm = TRUE)
+  )
+```
+
+```{r}
+# main plot (effect of condition on pattern perception)
+
+mean_se <- function(x) {
+  n <- length(x)
+  mean <- mean(x)
+  se <- sd(x) / sqrt(n)
+  return(c(y = mean, ymin = mean - se, ymax = mean + se))
+}
+  
+d %>%
+  ggplot(aes(Condition, PatternPerception)) +
+  stat_summary(fun = mean, geom = "point") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.1) +  labs(y = "Pattern Perception (1-7)", x = "Instruction Condition", color = "Condition", title = "Pattern Perception by Condition", subtitle = "SE Bars") + theme_bw()
+
+```
+
+An ANOVA on the pattern perception measure revealed a significant effect of the intuitive pattern search manipulation, F(1, 225) = 15.34, p < .001, η² = .064. Participants in the high pattern search condition detected clearer patterns in the random sequences (M = 4.15, SD = 1.69) than participants in the low pattern search condition (M = 3.16, SD = 2.09). These findings replicate and extend the original effect reported by van Prooijen et al. (2018), who found a significant but smaller effect of the same manipulation, F(1, 179) = 8.26, p = .005, η² = .04, with higher pattern perception in the high pattern search condition (M = 4.03, SD = 1.64) than in the low pattern search condition (M = 3.32, SD = 1.71).
+
+### Exploratory analyses
+
+```{r}
+### exploratory analyses
+
+#### correlations (between pattern perception and diff. belief scales)
 
 print(cor.test(d$PatternPerception, d$ExistingConspiracyBeliefs,
                use = "pairwise.complete.obs"))
@@ -233,52 +275,50 @@ print(cor.test(d$PatternPerception, d$SupernaturalBeliefs,
                use = "pairwise.complete.obs"))
 print(summary(lm(SupernaturalBeliefs ~ PatternPerception, data = d)))
 
+#### mediations: indirect effect of the intuitive pattern search manipulation (effect-coded: 1 high pattern search, 1 low pattern search) on irrational beliefs through pattern perception
 
-
-# mediations
-
-# a-path (same mediator model for all three)
+#### a-path (same mediator model for all three)
 m.mod <- lm(PatternPerception ~ HPS_num, data = d)
 
 set.seed(251)
 
-## (a) Existing conspiracy beliefs
+#### (a) Existing conspiracy beliefs
 y.exist <- lm(ExistingConspiracyBeliefs ~ HPS_num + PatternPerception, data = d)
 
-#  med.exist <- mediate(
-#   m.mod, y.exist,
-#   treat = "HPS_num",
-#   mediator = "PatternPerception",
-#   boot = TRUE, sims = 5000
-# )
+ med.exist <- mediate(
+  m.mod, y.exist,
+  treat = "HPS_num",
+  mediator = "PatternPerception",
+  boot = TRUE, sims = 5000
+)
 
-# print(summary(med.exist))
+ print(summary(med.exist))
 
-## (b) Fictitious conspiracy beliefs
+#### (b) Fictitious conspiracy beliefs
 y.fict <- lm(FictitiousConspiracyBeliefs ~ HPS_num + PatternPerception, data = d)
 
-# # med.fict <- mediate(
-#   m.mod, y.fict,
-#   treat = "HPS_num",
-#   mediator = "PatternPerception",
-#   boot = TRUE, sims = 5000
-# )
+ med.fict <- mediate(
+  m.mod, y.fict,
+  treat = "HPS_num",
+  mediator = "PatternPerception",
+  boot = TRUE, sims = 5000
+)
 
-# print(summary(med.fict))
+ print(summary(med.fict))
 
-## (c) Supernatural beliefs
+#### (c) Supernatural beliefs
 y.super <- lm(SupernaturalBeliefs ~ HPS_num + PatternPerception, data = d)
 
-# # med.super <- mediate(
-#   m.mod, y.super,
-#   treat = "HPS_num",
-#   mediator = "PatternPerception",
-#   boot = TRUE, sims = 5000
-# )
+med.super <- mediate(
+  m.mod, y.super,
+  treat = "HPS_num",
+  mediator = "PatternPerception",
+  boot = TRUE, sims = 5000
+)
 
-# print(summary(med.super))
+ print(summary(med.super))
 
-# MANOVA
+#### MANOVA (testing multivariate direct effect of manipulation on the diff. belief scales)
 
 mv.mod <- manova(
   cbind(
@@ -289,8 +329,11 @@ mv.mod <- manova(
   data = d
 )
 
-# print(summary(mv.mod, test = "Wilks"))
+print(summary(mv.mod, test = "Wilks"))
 print(summary.aov(mv.mod))
+
+
+#### plots (relationship of pattern perception w diff. belief scales)
 
 ggplot(d, aes(PatternPerception, ExistingConspiracyBeliefs, color = Condition)) +
   geom_point(alpha = .7) +
@@ -301,39 +344,42 @@ ggplot(d, aes(PatternPerception, ExistingConspiracyBeliefs, color = Condition)) 
        color = "Condition") +
   theme_minimal()
 
-```
+ggplot(d, aes(PatternPerception, FictitiousConspiracyBeliefs, color = Condition)) +
+  geom_point(alpha = .7) +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(title = "Relation between pattern perception and fictitious conspiracy beliefs",
+       x = "Pattern perception (1–7)",
+       y = "Existing conspiracy beliefs (1–5)", 
+       color = "Condition") +
+  theme_minimal()
 
-```{r}
-# main plot
-
-ggplot(d, aes(Condition, PatternPerception, fill = Condition)) +
-  geom_boxplot(alpha = .65) +
-  labs(
-    title = "Pattern Perception by Condition",
-    x = "Instruction Condition",
-    y = "Pattern Perception (1–7)"
-  ) +
-  guides(fill = "none") +
+ggplot(d, aes(PatternPerception, SupernaturalBeliefs, color = Condition)) +
+  geom_point(alpha = .7) +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(title = "Relation between pattern perception and supernatural conspiracy beliefs",
+       x = "Pattern perception (1–7)",
+       y = "Existing conspiracy beliefs (1–5)", 
+       color = "Condition") +
   theme_minimal()
 
 ```
 
-### Confirmatory analysis
+A MANOVA on the three belief measures yielded no significant multivariate or univariate effects, with all Fs < 1.2. Consistent with the original study, the intuitive pattern search manipulation therefore did not exert a direct effect on participants’ belief endorsement. As in the original study, however, the manipulation reliably influenced participants’ tendency to perceive patterns in the coin toss sequences. We therefore examined whether perceived pattern structure was associated with belief endorsement and whether the manipulation exerted an indirect effect on beliefs via pattern perception.
 
-The analyses as specified in the analysis plan.  
+Pattern perception was not significantly correlated with belief in existing conspiracy theories (r = .073, p = .272) or with supernatural beliefs (r = .106, p = .112), but it was significantly correlated with belief in fictitious conspiracy theories (r = .159, p = .017). To test whether intuitive pattern search influenced beliefs indirectly through pattern perception, we conducted bootstrapped mediation analyses (5,000 samples) using effect-coded condition assignment (−1 = low pattern search, +1 = high pattern search). For existing conspiracy beliefs, the indirect effect was not significant (B = 0.019, 95% CI [−0.009, 0.05], p = .20). In contrast, a significant indirect effect emerged for fictitious conspiracy beliefs (B = 0.036, 95% CI [0.009, 0.07], p = .006). The indirect effect for supernatural beliefs was not significant (B = 0.016, 95% CI [−0.001, 0.04], p = .072).
 
-*Side-by-side graph with original graph is ideal here*
-
-### Exploratory analyses
-
-Any follow-up analyses desired (not required).  
+Taken together, these findings partially replicate the original pattern. Although the intuitive pattern search manipulation did not exert a direct effect on belief endorsement, it indirectly influenced belief in fictitious conspiracy theories via increased pattern perception. However, unlike the original study, this indirect effect did not generalize to existing conspiracy beliefs or supernatural beliefs, suggesting that the downstream consequences of illusory pattern perception may be domain-specific rather than broadly applicable across belief systems.
 
 ## Discussion
 
 ### Summary of Replication Attempt
 
-Open the discussion section with a paragraph summarizing the primary result from the confirmatory analysis and the assessment of whether it replicated, partially replicated, or failed to replicate the original result.  
+The present replication successfully reproduced the primary experimental effect reported in the original study: participants instructed to look for patterns in the random coin tosses perceived significantly more patterns than participants in the low pattern search. The magnitude of this effect was comparable to - and somewhat larger than - that reported by van Prooijen et al. (2018), indicating a robust and replicable influence of intuitive processing (or this particular manipulation) on illusory pattern perception.
+
+In contrast, downstream effects on belief endorsement showed only partial replication. As in the original study, a MANOVA revealed no direct effects of the manipulation on belief measures. However, whereas the original study reported significant correlations and indirect effects via pattern perception for all three belief domains (existing conspiracy beliefs, fictitious conspiracy beliefs, and supernatural beliefs), the present replication found evidence for a significant indirect effect only in the case of fictitious conspiracy beliefs. Associations between pattern perception and existing conspiracy beliefs and supernatural beliefs were weaker and not statistically significant. Overall, the replication supports the reliability of the manipulation and the proximal cognitive mechanism, but provides only partial support for its broader downstream consequences for belief endorsement. 
 
 ### Commentary
 
-Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt.  None of these need to be long.
+Several insights emerge from follow-up analyses and comparison with the original findings. First, the strongest and most reliable downstream effects were observed for fictitious conspiracy beliefs - beliefs that are novel, implausible, and weakly embedded in participants' prior ideological or identity-based commitments. This pattern suggests that illusory pattern perception may be most consequential for belief formation when individuals lack strong prior attitudes, rather than for entrenched or culturally salient beliefs such as existing conspiracy theories or supernatural worldviews.
+
+Second, differences between the original and replication samples plausibly moderate the observed effects. The present study employed a larger and perhaps more heterogeneous Prolific sample, which may yield more conservative estimates of belief associations. The original paper did not clearly document exclusion criteria despite discrepancies between reported sample size and analytic degrees of freedom, limiting the precision with which the original analyses can be reconstructed. The weaker correlations and indirect effects observed here are consistent with the possibility that the original downstream effects were overestimated or context-dependent, rather than spurious. However, endorsement of existing conspiracy theories (e.g., 9/11 or JFK) is likely shaped by motivated reasoning, ideological commitments, and broader trust or distrust in institutions. As a result, momentary increases in pattern perception may be insufficient to shift these beliefs, which likely require sustained motivational or contextual influences rather than a transient cognitive manipulation. Future research should examine whether the effects of illusory pattern perception depend on the type of belief being evaluated.
