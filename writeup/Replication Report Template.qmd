@@ -99,13 +99,17 @@ None.
 
 ### Data preparation
 
+```{r setup}
+knitr::opts_knit$set(root.dir = "~/Documents/GitHub/vanprooijen2018")
+```
+
 ```{r}
 ### data preparation
 
 library(tidyverse)
 library(mediation)
 
-df <- read.csv('/Users/as4508/Downloads/PSYCH 251 Replication_December 5, 2025_11.32.csv')
+df <- read.csv("data/PSYCH 251 Replication_December 5, 2025_11.32-anon.csv")
 
 ### data exclusion / filtering
 names(df) <- make.names(names(df))
@@ -254,7 +258,7 @@ d %>%
 
 ```
 
-An ANOVA on the pattern perception measure revealed a significant effect of the intuitive pattern search manipulation, F(1, 225) = 15.34, p < .001, η² = .064. Participants in the high pattern search condition detected clearer patterns in the random sequences (M = 4.15, SD = 1.69) than participants in the low pattern search condition (M = 3.16, SD = 2.09). These findings replicate and extend the original effect reported by van Prooijen et al. (2018), who found a significant but smaller effect of the same manipulation, F(1, 179) = 8.26, p = .005, η² = .04, with higher pattern perception in the high pattern search condition (M = 4.03, SD = 1.64) than in the low pattern search condition (M = 3.32, SD = 1.71).
+An ANOVA on the pattern perception measure revealed a **significant effect of the intuitive pattern search manipulation**, F(1, 225) = 15.34, p < .001, η² = .064. Participants in the high pattern search condition detected clearer patterns in the random sequences (M = 4.15, SD = 1.69) than participants in the low pattern search condition (M = 3.16, SD = 2.09). These findings replicate and extend the original effect reported by van Prooijen et al. (2018), who found a significant but smaller effect of the same manipulation, F(1, 179) = 8.26, p = .005, η² = .04, with higher pattern perception in the high pattern search condition (M = 4.03, SD = 1.64) than in the low pattern search condition (M = 3.32, SD = 1.71).
 
 ### Exploratory analyses
 
